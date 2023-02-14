@@ -17,6 +17,7 @@ Next, the data labels are checked for class imbalance. The data is relatively ba
 
 70% of data was used for training and 30% was used to tune the hyperparameters. Sigmoid, RBF, and Polynomial kernels were tested to optimize the decision boundaries since they are most useful in multidimensional and non-linear separation problems. 
 
+![image](https://user-images.githubusercontent.com/117458345/218732765-c550c6f0-429b-4d6c-9380-2aba54098aca.png)
 
 ### Model 2
 
@@ -24,11 +25,11 @@ For the second model a deep neural network was constructed using a convolutional
 
 In order to create the best multi-classification algorithm with this model composition, the negative log-likelihood error function was used as a loss function. It is possible to generate similar results by removing the LogSoftmax from the model composition and using the Cross-Entropy Loss as the error function. 
 
-Before training a validation and training set were created. This was done by using the random_split function from PyTorch. As the dataset is fairly large, the validation set was chosen to be 10% of the total dataset used for training. 
+Before training a validation and training set were created. This was done by using the random_split function from PyTorch. As the dataset is fairly large, the validation set was chosen to be 10% of the total dataset used for training.  
 
-In order to tune the hyperparameters, a selection of the most used hyperparameters was selected and implemented to check which combination produced the best results. The tested parameters are: learning_rate = [0.1, 0.01, 0.001, 0.0001], optimizer = [SGD, Adam], batch_size = [32, 64, 128]. In order to compare them the test/validation losses and accuracies were compared together with the speed of the training process. From the results it is found that the Adam optimizer outperforms the SGD optimizer, also with the Adam optimizer a learning_rate of 0.0001 is the most efficient and finally, a batch size of 64 has the fastest learning rate while maintaining the best results. Finally, the number of epochs (initially 10) was tuned. As the model converged rather fast, after only 5 epochs the losses and accuracies already stabilized. Therefore, the final number of epochs was set at 5. 
+After the implementation of the final model on the test dataset, an overall accuracy of 93% was achieved. The most difficult classes to classify are 19, 17, and 13. These classes have similarities to other classes and may therefore be predicted as if they are of a different class. E.g., 13 is similar to 10, 17 to 3, and 19 to 6. 
 
-After the implementation of the final model on the test dataset, an overall accuracy of 93% was achieved. The full classification report can be found in Appendix 2. The most difficult classes to classify are 19, 17, and 13. These classes have similarities to other classes and may therefore be predicted as if they are of a different class. E.g., 13 is similar to 10, 17 to 3, and 19 to 6. 
+![image](https://user-images.githubusercontent.com/117458345/218732917-d6654e56-4ee4-4c4a-a7bd-e2cdbca52c29.png)
 
 ### Evaluation
 
@@ -45,3 +46,6 @@ After importing packages and datasets, the loaded images were looped over. In th
 After conducting image processing it was possible to utilize the trained model to make predictions. The convolutional neural network (CNN) model was chosen as it was a better predictor in the previous task. Before looping over the obtained images, bounding boxes in the images were defined. Also, it was double-checked that bounding boxes had a minimum size that could display a sign language image. Furthermore, since the size of the bounding box can be less than 28x28, the middle of the width was found and taken as the center point together with the full height. This is necessary to be able to pass the image through the layers of the pre-trained CNN model. After getting the right format, the pictures were passed through the model, and by using the .argmax function the ones with the biggest probabilities were chosen. Finally, zeros were added in the predicted classes with only one digit. Extracted predictions were added to the final list of predictions and then saved in the .csv file. 
 
 The top five predictions were picked out for each image based on various thresholding parameters that give different bounding boxes thus different sub-images. Based on the predictions made, it is noticed that the overall performance of the model is relatively lower compared to that in task 1 where the model has to run through each single image row by row. The model appears to produce lower accuracy scores for some particular classes such as 10 and 24. It is also learned that class 05 is wrongly predicted quite often. This problem could be fixed by either enhancing further the image quality, modifying the parameter choices to retrieve more accurate bounding boxes, or applying data augmentation to the dataset for the model training. In general, the model performs reasonably well as a result of the sanity check (Appendix 5). It made a 100% accurate prediction for the first image, and partially correct predictions for the second and the last image of the dataset due to the reasons discussed earlier. 
+
+![image](https://user-images.githubusercontent.com/117458345/218733034-e6b5392e-0996-4c2a-bd48-3a7126d20fa4.png)
+
